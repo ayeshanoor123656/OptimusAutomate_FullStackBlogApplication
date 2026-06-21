@@ -9,6 +9,8 @@ import Login from "./Login";
 import Dashboard from "./Dashboard";
 import CreatePost from "./CreatePost";
 import Home from "./Home";
+import Landing from "./Landing";
+
 import EditPost from "./EditPost";
 function App() {
 
@@ -16,10 +18,15 @@ function App() {
 
         <BrowserRouter>
 
-            <Routes>
+          <Routes>
 
     <Route
         path="/"
+        element={<Landing />}
+    />
+
+    <Route
+        path="/register"
         element={<Register />}
     />
 
@@ -42,10 +49,11 @@ function App() {
         path="/home"
         element={<Home />}
     />
+
     <Route
-    path="/edit-post/:id"
-    element={<EditPost />}
-/>
+        path="/edit-post/:id"
+        element={<EditPost />}
+    />
 
 </Routes>
         </BrowserRouter>
