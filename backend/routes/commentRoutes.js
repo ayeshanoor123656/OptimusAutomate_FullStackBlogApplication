@@ -1,0 +1,72 @@
+const express = require("express");
+
+const Comment = require("../models/Comment");
+const authMiddleware = require(
+    "../middleware/authMiddleware"
+);
+
+const router = express.Router();
+
+router.post(
+    "/create",
+    authMiddleware,
+    async (req, res) => {
+
+        try {
+
+            const { text, postId } = req.body;
+
+            const comment =
+                await Comment.create({
+                    text,
+                    post: postId,
+                    author: req.user.id
+                });
+
+            res.status(201).json(comment);
+
+        }
+        catch (error) {
+
+            res.status(500).json({
+                message: error.message
+            });
+
+        }
+
+    }
+);
+
+router.get(
+    "/:postId",
+    async (req, res) => {
+
+        try {
+
+            const comments =
+                await Comment.find({
+                    post: req.params.postId
+                })
+                .populate(
+                    "author",
+                    "username"
+                )
+                .sort({
+                    createdAt: -1
+                });
+
+            res.json(comments);
+
+        }
+        catch (error) {
+
+            res.status(500).json({
+                message: error.message
+            });
+
+        }
+
+    }
+);
+
+module.exports = router;
