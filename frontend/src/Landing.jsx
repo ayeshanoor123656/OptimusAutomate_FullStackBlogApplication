@@ -51,8 +51,9 @@ function Landing() {
                         Inkwell is a distraction-free space to write, share, and discover stories that actually say something.
                     </p>
                     <div className="l-hero-actions">
+                        {/* ✅ Removed "Read the feed →" link — feed requires login */}
                         <Link to="/register" className="btn-primary l-hero-btn">Create your account</Link>
-                        <Link to="/home" className="l-hero-secondary">Read the feed →</Link>
+                        <Link to="/login" className="l-hero-secondary">Sign in →</Link>
                     </div>
                 </div>
 
@@ -131,10 +132,10 @@ function Landing() {
                     min-height: 100svh;
                 }
 
-                /* Nav */
+                /* Nav — ✅ fixed to match --bg, not the old dark theme */
                 .l-nav {
                     position: sticky; top: 0; z-index: 100;
-                    background: rgba(15,15,19,.85);
+                    background: rgba(250,248,245,.92);
                     backdrop-filter: blur(12px);
                     border-bottom: 1px solid var(--border);
                 }
@@ -213,14 +214,14 @@ function Landing() {
                 }
                 .deco-ring {
                     position: absolute; border-radius: 50%;
-                    border: 1px solid rgba(124,58,237,.12);
+                    border: 1px solid rgba(192,132,160,.15);
                 }
                 .deco-ring-1 { width: 500px; height: 500px; }
-                .deco-ring-2 { width: 780px; height: 780px; border-color: rgba(124,58,237,.06); }
+                .deco-ring-2 { width: 780px; height: 780px; border-color: rgba(192,132,160,.07); }
                 .deco-pulse {
                     position: absolute;
                     width: 180px; height: 180px; border-radius: 50%;
-                    background: radial-gradient(circle, rgba(124,58,237,.18) 0%, transparent 70%);
+                    background: radial-gradient(circle, rgba(192,132,160,.15) 0%, transparent 70%);
                 }
 
                 /* Sections */
@@ -251,7 +252,7 @@ function Landing() {
                     display: flex; flex-direction: column; gap: 12px;
                     transition: border-color .2s, transform .15s;
                 }
-                .l-post-card:hover { border-color: rgba(124,58,237,.4); transform: translateY(-2px); }
+                .l-post-card:hover { border-color: rgba(192,132,160,.4); transform: translateY(-2px); }
                 .l-post-tag {
                     font-size: 11px; font-weight: 500;
                     letter-spacing: .08em; text-transform: uppercase;
@@ -282,25 +283,13 @@ function Landing() {
                 .l-feature-desc { font-size: 14px; color: var(--text-dim); line-height: 1.65; }
 
                 /* CTA */
-                .l-cta-section {
-                    padding: 100px 24px;
-                    border-bottom: 1px solid var(--border);
-                }
+                .l-cta-section { padding: 100px 24px; border-bottom: 1px solid var(--border); }
                 .l-cta-inner { text-align: center; }
-                .l-cta-heading {
-                    font-size: clamp(28px, 4.5vw, 48px);
-                    margin-bottom: 14px;
-                }
-                .l-cta-sub {
-                    color: var(--text-dim); font-size: 16px;
-                    margin-bottom: 36px;
-                }
+                .l-cta-heading { font-size: clamp(28px, 4.5vw, 48px); margin-bottom: 14px; }
+                .l-cta-sub { color: var(--text-dim); font-size: 16px; margin-bottom: 36px; }
 
                 /* Footer */
-                .l-footer {
-                    padding: 32px 24px;
-                    border-top: 1px solid var(--border);
-                }
+                .l-footer { padding: 32px 24px; border-top: 1px solid var(--border); }
                 .l-footer-inner {
                     display: flex; align-items: center;
                     justify-content: space-between; flex-wrap: wrap; gap: 12px;

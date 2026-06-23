@@ -12,6 +12,12 @@ function EditPost() {
     const [content, setContent] = useState("");
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(true);
+    const [error, setError] = useState("");
+
+    // Decode JWT to get logged-in user's ID
+    const currentUserId = JSON.parse(
+        atob(localStorage.getItem("token")?.split(".")[1] || "e30=")
+    )?.id || null;
 
     useEffect(() => { fetchPost(); }, []);
 
@@ -19,7 +25,22 @@ function EditPost() {
         try {
             const response = await API.get("/posts/all");
             const post = response.data.find((p) => p._id === id);
-            if (post) { setTitle(post.title); setContent(post.content); }
+
+            if (!post) {
+                setError("Post not found.");
+                return;
+            }
+
+            // ✅ Block access if this post doesn't belong to the current user
+            if (post.author?._id !== currentUserId) {
+                setError("You can only edit your own posts.");
+                return;
+            }
+
+            setTitle(post.title);
+            setContent(post.content);
+        } catch (err) {
+            setError("Failed to load post.");
         } finally {
             setFetching(false);
         }
@@ -36,9 +57,8 @@ function EditPost() {
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             navigate("/home");
-        } catch (error) {
-            console.log(error);
-        } finally {
+        } catch (err) {
+            setError(err.response?.data?.message || "Failed to save changes.");
             setLoading(false);
         }
     };
@@ -50,6 +70,25 @@ function EditPost() {
                 <div className="page" style={{ textAlign: "center", paddingTop: 80, color: "var(--text-dim)" }}>
                     Loading post…
                 </div>
+            </div>
+        );
+    }
+
+    // ✅ Show a clear error screen instead of an editable form
+    if (error) {
+        return (
+            <div>
+                <Navbar />
+                <div className="page">
+                    <div className="edit-error-state">
+                        <span className="edit-error-icon">⊘</span>
+                        <p className="edit-error-msg">{error}</p>
+                        <button className="btn-ghost" onClick={() => navigate("/home")}>
+                            Back to home
+                        </button>
+                    </div>
+                </div>
+                <style>{errorStyles}</style>
             </div>
         );
     }
@@ -152,9 +191,36 @@ function EditPost() {
                     font-size: 15px;
                     border-radius: var(--r-sm);
                 }
+
+                ${errorStyles}
             `}</style>
         </div>
     );
 }
+
+const errorStyles = `
+    .edit-error-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        padding: 80px 20px;
+        text-align: center;
+    }
+    .edit-error-icon {
+        font-size: 32px;
+        color: var(--error);
+        line-height: 1;
+    }
+    .edit-error-msg {
+        font-size: 15px;
+        color: var(--text-dim);
+    }
+    .edit-error-state .btn-ghost {
+        padding: 10px 22px;
+        font-size: 14px;
+        border-radius: var(--r-sm);
+    }
+`;
 
 export default EditPost;

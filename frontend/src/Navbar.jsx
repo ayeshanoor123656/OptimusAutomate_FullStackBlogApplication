@@ -7,7 +7,7 @@ function Navbar() {
     const handleLogout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("userEmail");
-        navigate("/login");
+        navigate("/");  // ✅ go to landing page, not /login
     };
 
     return (
@@ -42,7 +42,7 @@ function Navbar() {
                     position: sticky;
                     top: 0;
                     z-index: 100;
-                    background: rgba(15,15,19,.85);
+                    background: rgba(250,248,245,.92);
                     backdrop-filter: blur(12px);
                     border-bottom: 1px solid var(--border);
                 }
